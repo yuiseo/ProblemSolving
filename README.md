@@ -5,4 +5,4 @@
 백준, 프로그래머스, 소프티어,SWEA, leetCode
 
 ## 사용 언어
-python, javaScript, mySQL
+Python, JavaScript, mySQL
