@@ -1,18 +1,22 @@
-N,M=map(int,input().split())
-tree = list(map(int,input().split()))
-tree.sort()
+import sys
+from collections import Counter
 
-l=1
-r=tree[-1]
+# 입력
+n, m = map(int, sys.stdin.readline().split())
+trees = Counter(map(int, sys.stdin.read().split()))
 
-while l<=r:
-    mid=(l+r)//2
-    total=[target-mid if target>mid else 0 for target in tree]
-    result = sum(total)
+# 초기 설정
+s = 1
+e = 1000000000
 
-    if result>=M:
-        l=mid+1
-    else:
-        r=mid-1
+while s <= e:
+    mid = (s + e) // 2  # 중간값 설정
+    # 중간값을 기준으로 잘랐을 때 가져갈 수 있는 나무 길이 합 계산
+    tot = sum((h - mid) * i for h, i in trees.items() if h > mid)
 
-print(r)
+    if tot >= m:  # 가져갈 수 있는 나무 길이 합이 목표보다 크거나 같은 경우
+        s = mid + 1  # 높이를 높여야 함
+    elif tot < m:  # 가져갈 수 있는 나무 길이 합이 목표보다 작은 경우
+        e = mid - 1  # 높이를 낮춰야 함
+
+print(e)  # 결과 출력
