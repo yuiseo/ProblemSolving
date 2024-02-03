@@ -1,29 +1,8 @@
-import sys
-input = sys.stdin.readline
+from sys import stdin, stdout
+n = stdin.readline()
+N = set(stdin.readline().split())
+m = stdin.readline()
+M = stdin.readline().split()
 
-N = int(input())
-A = list(map(int,input().split(' ')))
-A.sort()
-M = int(input())
-B = list(map(int,input().split(' ')))
-
-for i in range(M):
-    target = B[i]
-    left = 0
-    right = N-1
-
-    while left<=right:
-        mid = (left+right)//2
-        
-        if A[mid] == target:
-            print(1)
-            break
-
-        elif A[mid] > target:
-            right = mid-1
-
-        else:
-            left = mid+1
-    else:
-        print(0)
-
+for l in M:
+    stdout.write('1\n') if l in N else stdout.write('0\n')
