@@ -1,44 +1,37 @@
-import sys
-input = sys.stdin.readline
-from collections import deque
+N = int(input())
+graph = [list(map(int, input())) for _ in range(N)]
+num = []
 
-n = int(input())
-arr = [list(map(int,input().strip())) for _ in range(n)]
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
 
-answer = []
-cnt=0
-
-
-def bfs(y,x):
-    queue = deque()
-    queue.append((y,x))
-    arr[y][x] = 0
-
-    bfs_cnt = 0
-    while queue:
-        ny,nx = queue.popleft()
-
-        directy = [-1,1,0,0]
-        directx = [0,0,-1,1]
-
+def DFS(x,y):
+    if x<0 or x>=N or y<0 or y >=N:
+        return False
+    
+    if graph[x][y] == 1:
+        global count
+        count += 1
+        graph[x][y] = 0
         for i in range(4):
-            dy = directy[i] + ny
-            dx = directx[i] + nx
+            nx = x +dx[i]
+            ny = y +dy[i]
+            DFS(nx,ny)
+        return True
+    return False
+    
 
-            if 0<=dy<n and 0<=dx<n:
-                if arr[dy][dx]==1:
-                    arr[dy][dx] = 0
-                    queue.append((dy,dx))
-        bfs_cnt+=1
-    answer.append(bfs_cnt)
+count = 0
+result = 0
 
-for i in range(n):
-    for j in range(n):
-        if arr[i][j] == 1:
-            bfs(i,j)
-            cnt+=1
-
-answer.sort()
-print(cnt)
-for a in answer:
-    print(a)
+for i in range(N):
+    for j in range(N): 
+        if DFS(i,j) == True:
+            num.append(count)
+            result += 1
+            count = 0
+        
+num.sort()
+print(result)
+for i in range(len(num)):
+	print(num[i])
