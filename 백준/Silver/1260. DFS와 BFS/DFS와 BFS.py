@@ -1,42 +1,48 @@
 import sys
 from collections import deque
+
 input = sys.stdin.readline
+n,m,v = map(int,input().split())
+arr = [[] for _ in range(n+1)]
 
-N,M,V = map(int, input().split())
+dfs_visit = [0] * (n+1)
+bfs_visit = [0] * (n+1)
 
-graph = [[0]*(N+1)for _ in range(N+1)]
+dfs_result = []
+bfs_result = []
 
-for i in range(M):
-    x,y = map(int,input().split())
-    graph[y][x] = 1
-    graph[x][y] = 1
+for _ in range(m):
+    a,b = map(int,input().split())
+    arr[a].append(b)
+    arr[b].append(a)
 
-visitedDFS = [0] * (N+1)
-visitedBFS = [0] * (N+1)
+for i in range(n+1):
+    arr[i].sort()
+
+def dfs(now):
+    dfs_visit[now] = 1
+    dfs_result.append(now)
+
+    for a in arr[now]:
+        if not dfs_visit[a]:
+            dfs(a)
 
 
-def DFS(v):
-    visitedDFS[v] = 1
-    print(v, end=" ")
-
-    for i in range(1,N+1):
-        # 방문 기록 없고, 연결 되어 있을 때
-        if not visitedDFS[i] and graph[v][i] ==1:
-            DFS(i)
-
-def BFS(v):
-    queue = deque([v])
-    visitedBFS[v] = 1
+def bfs(now):
+    queue = deque()
+    queue.append(now)
+    bfs_visit[now] = 1
 
     while queue:
-        v = queue.popleft()
-        print(v,end=" ")
-        for i in range(1,N+1):
-            # 방문 기록 없고, 연결 되어 있을 때
-            if not visitedBFS[i] and graph[v][i] == 1:
-                queue.append(i)
-                visitedBFS[i] = 1
+        start = queue.popleft()
+        bfs_result.append(start)
 
-DFS(V)
-print()
-BFS(V)
+        for a in arr[start]:
+            if not bfs_visit[a]:
+                bfs_visit[a] = True
+                queue.append(a)
+
+dfs(v)
+bfs(v)
+print(*dfs_result)
+print(*bfs_result)
